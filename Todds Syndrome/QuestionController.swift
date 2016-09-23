@@ -46,7 +46,7 @@ class QuestionController: UITableViewController {
             alertController.addAction(nameAction)
             alertController.addAction(cancelAction)
             
-            self.presentViewController(alertController, animated: true) {
+            presentViewController(alertController, animated: true) {
                 // ...
             }
         } else {

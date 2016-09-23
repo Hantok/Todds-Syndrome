@@ -32,15 +32,15 @@ class UsersTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.users.count
+        return users.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("userIdentifier", forIndexPath: indexPath)
         
-        cell.textLabel!.text = self.users[indexPath.row].valueForKey("name") as? String
-        cell.detailTextLabel?.text = "Todd's syndrome probability is \(self.users[indexPath.row].getPercent())%"
+        cell.textLabel!.text = users[indexPath.row].valueForKey("name") as? String
+        cell.detailTextLabel?.text = "Todd's syndrome probability is \(users[indexPath.row].getPercent())%"
 
         return cell
     }
@@ -48,5 +48,20 @@ class UsersTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedUser = users[indexPath.row]
         performSegueWithIdentifier("toTest", sender: self)
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        switch editingStyle {
+        case .Delete:
+            CoreService.deleteUser(users[indexPath.row])
+            users.removeAtIndex(indexPath.row)   
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        default:
+            return
+        }
     }
 }

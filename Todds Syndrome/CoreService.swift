@@ -44,6 +44,17 @@ class CoreService: NSObject {
         }
     }
     
+    static func deleteUser(user: User) {
+        
+        managedObjectContext.deleteObject(user)
+        do {
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("Could not delete user \(error), \(error.userInfo)")
+        }
+
+    }
+    
     static func fetchUsers() -> [User] {
         managedObjectContext.rollback()
         let fetchRequest = NSFetchRequest(entityName: "User")
